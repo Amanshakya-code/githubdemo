@@ -12,7 +12,7 @@ class RepositoryRetrofitInstance {
             val logging = HttpLoggingInterceptor()
             logging.setLevel(HttpLoggingInterceptor.Level.BODY)
             val client = OkHttpClient.Builder().addInterceptor(logging).build()
-            Retrofit.Builder().baseUrl("")
+            Retrofit.Builder().baseUrl("https://api.github.com/search/")
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()

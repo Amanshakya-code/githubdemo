@@ -2,11 +2,49 @@ package com.pro.githubdemo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.pro.githubdemo.Adapters.GitHubTopAdapters
+import com.pro.githubdemo.ViewModel.GitHubViewModel
+import com.pro.githubdemo.ViewModel.GitHubViewModelFactory
+import com.pro.githubdemo.repository.GitHubRepository
+import com.pro.githubdemo.util.GitHubResource
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var adapter: GitHubTopAdapters
+    lateinit var viewModel1 : GitHubViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        val repository = GitHubRepository()
+        val viewModelProviderFactory = GitHubViewModelFactory(application, repository)
+        viewModel1 = ViewModelProvider(this, viewModelProviderFactory).get(GitHubViewModel::class.java)
+        adapter = GitHubTopAdapters()
+        recylerView.layoutManager = LinearLayoutManager(this)
+        recylerView.adapter = adapter
+
+        viewModel1.topRepositories.observe(this){ response ->
+            when (response) {
+                is GitHubResource.Success -> {
+                    response.data?.let { repoResponse ->
+                        adapter.diffUtil.submitList(repoResponse.items.toList())
+                    }
+                }
+                is GitHubResource.Error -> {
+                    response.message?.let {
+                        Toast.makeText(this, "something went wrong !!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                is GitHubResource.Loading -> {
+
+                }
+            }
+
+        }
+
 
     }
 }
