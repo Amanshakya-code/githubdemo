@@ -2,6 +2,7 @@ package com.pro.githubdemo
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity() {
             when (response) {
                 is GitHubResource.Success -> {
                     response.data?.let { repoResponse ->
+                       // Log.d("checkdata","${repoResponse.items.toList()}")
                         adapter.diffUtil.submitList(repoResponse.items.toList())
                     }
                 }

@@ -1,6 +1,7 @@
 package com.pro.githubdemo.Adapters
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,9 +50,11 @@ class GitHubTopAdapters() : RecyclerView.Adapter<GitHubTopAdapters.GithuvViewHol
                 intent.putExtra("url",currentObject.url)
                 intent.putExtra("name",currentObject.name)
                 intent.putExtra("desc",currentObject.description)
+                intent.putExtra("count",(currentObject.stargazers_count).toString())
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 maincardView.context.startActivity(intent)
             }
+            Log.d("checkdata","${currentObject.stargazers_count}")
         }
 
     }
