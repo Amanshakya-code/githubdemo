@@ -3,6 +3,7 @@ package com.pro.githubdemo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
@@ -28,24 +29,22 @@ class DetailView : AppCompatActivity() {
         topname.text = name
         descrip.text = descp
         starcount.text = starCount
-        Log.i("apiurl","$url" + "/")
         viewModel.getReadme(url+"/")
         viewModel.readme.observe(this) { response ->
             when (response) {
                 is GitHubResource.Success -> {
-                    response.data?.let { resultResponse ->
+                    webviewpb.visibility = View.GONE
+                    response.data?.let {
                         webView.webViewClient = WebViewClient()
-                        webView.loadUrl(resultResponse.html_url.toString())
+                        webView.loadUrl(it.html_url.toString())
                     }
                 }
                 is GitHubResource.Loading -> {
+                    webviewpb.visibility = View.VISIBLE
 
-                    response.message?.let {
-                        Toast.makeText(this, "Something went wrong :(", Toast.LENGTH_SHORT).show()
-                    }
                 }
                 is GitHubResource.Error -> {
-
+                    Toast.makeText(this, "Something went wrong :(", Toast.LENGTH_SHORT).show()
                 }
             }
         }

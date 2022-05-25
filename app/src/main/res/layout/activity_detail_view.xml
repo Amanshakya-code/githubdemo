@@ -37,9 +37,22 @@
             android:textSize="22sp"
             android:layout_margin="10dp"/>
 
-        <WebView
-            android:id="@+id/webView"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="600dp" />
+            android:layout_height="600dp">
+                <WebView
+                    android:id="@+id/webView"
+                    android:layout_width="match_parent"
+                    android:layout_height="600dp" />
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/webviewpb"
+                    android:layout_gravity="center"/>
+        </FrameLayout>
+
+
+
+
 
 </LinearLayout>

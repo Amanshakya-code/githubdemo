@@ -3,6 +3,7 @@ package com.pro.githubdemo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,19 +30,16 @@ class MainActivity : AppCompatActivity() {
         viewModel1.topRepositories.observe(this){ response ->
             when (response) {
                 is GitHubResource.Success -> {
-                    response.data?.let { repoResponse ->
-                       // Log.d("checkdata","${repoResponse.items.toList()}")
-                        adapter.diffUtil.submitList(repoResponse.items.toList())
+                    response.data?.let {
+                        mainpb.visibility = View.GONE
+                        adapter.diffUtil.submitList(it.items.toList())
                     }
+                }
+                is GitHubResource.Loading -> {
+                    mainpb.visibility = View.VISIBLE
                 }
                 is GitHubResource.Error -> {
-                    response.message?.let {
-                        Toast.makeText(this, "something went wrong !!", Toast.LENGTH_SHORT).show()
-                    }
-                }
-
-                is GitHubResource.Loading -> {
-
+                    Toast.makeText(this, "something went wrong !!", Toast.LENGTH_SHORT).show()
                 }
             }
 
